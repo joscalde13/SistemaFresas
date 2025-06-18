@@ -268,7 +268,7 @@
                     { id: 'cantidad', message: 'La cantidad es requerida' },
                     { id: 'nombre', message: 'El nombre es requerido' },
                     { id: 'direccion', message: 'La dirección es requerida' },
-                    { id: 'telefono', message: 'El teléfono es requerido' },
+              
                     { id: 'medida', message: 'Debe seleccionar una medida' },
                     { id: 'precio', message: 'El precio es requerido' },
                     { id: 'horario', message: 'El horario es requerido' },
