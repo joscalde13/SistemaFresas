@@ -16,5 +16,10 @@ class Venta extends Model
         'medida',
         'precio',
         'vendido',
+        'fecha',
+    ];
+
+    protected $casts = [
+        'fecha' => 'date:Y-m-d',
     ];
 }

@@ -11,5 +11,6 @@ class Compra extends Model
         'nombre',
         'costo',
         'producto',
+        'fecha',
     ];
 }

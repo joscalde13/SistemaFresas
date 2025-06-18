@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('costo', 8, 2);
             $table->string('producto');
             $table->timestamps();
+            $table->date('fecha')->nullable();
         });
     }
 

@@ -2,15 +2,30 @@
 
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
+use App\Models\Inventario;
+use App\Models\Venta;
 
-Route::get('/', function () {
-    return redirect('/login');
-})->name('home');
+/*
+|--------------------------------------------------------------------------
+| Redirección al login
+|--------------------------------------------------------------------------
+*/
+Route::get('/', fn() => redirect('/login'))->name('home');
 
+/*
+|--------------------------------------------------------------------------
+| Dashboard
+|--------------------------------------------------------------------------
+*/
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+/*
+|--------------------------------------------------------------------------
+| Configuración de usuario (Volt)
+|--------------------------------------------------------------------------
+*/
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
@@ -19,140 +34,189 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
 });
 
+/*
+|--------------------------------------------------------------------------
+| Autenticación
+|--------------------------------------------------------------------------
+*/
 require __DIR__.'/auth.php';
 
-Route::get('inventario', function () {
-    $inventario = \App\Models\Inventario::all();
-    return view('inventario', ['inventario' => $inventario]);
-})->middleware(['auth', 'verified'])->name('inventario.index');
+/*
+|--------------------------------------------------------------------------
+| Inventario
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'verified'])->prefix('inventario')->name('inventario.')->group(function () {
+    
+    // Lista de inventario
+    Route::get('/', function () {
+        $inventario = Inventario::all();
+        return view('inventario', ['inventario' => $inventario]);
+    })->name('index');
 
-Route::delete('inventario/{inventario}', function (\App\Models\Inventario $inventario) {
-    $inventario->delete();
+    // Editar inventario
+    Route::get('{inventario}/edit', function (Inventario $inventario) {
+        return view('inventario.edit', ['inventario' => $inventario]);
+    })->name('edit');
 
-    return redirect('/inventario');
-})->middleware(['auth', 'verified'])->name('inventario.destroy');
+    // Actualizar inventario
+    Route::put('{inventario}', function (Inventario $inventario) {
+        $validated = request()->validate([
+            'cantidad' => 'required|integer|min:1',
+            'costo' => 'required|numeric|min:0.01',
+            'fecha' => 'nullable|date',
+            'producto' => 'required|string',
+        ]);
 
-Route::put('inventario/{inventario}', function (\App\Models\Inventario $inventario) {
-    // Update the inventario item
-    $validated = request()->validate([
-        'nombre' => 'required|string|max:255',
-        'cantidad' => 'required|integer|min:1',
-        'costo' => 'required|numeric|min:0.01',
-        'producto' => 'required|string|max:255',
-    ]);
+        $inventario->producto = $validated['producto'];
+        $inventario->cantidad = $validated['cantidad'];
+        $inventario->costo = $validated['costo'];
+        if ($validated['fecha']) {
+            $inventario->fecha = $validated['fecha'];
+        }
+        $inventario->save();
 
-    $inventario->cantidad = $validated['cantidad'];
-    $inventario->nombre = $validated['nombre'];
-    $inventario->costo = $validated['costo'];
-    $inventario->producto = $validated['producto'];
-    $inventario->save();
+        return redirect()->route('inventario.index')->with('success', 'Inventario actualizado exitosamente');
+    })->name('update');
 
-    return redirect('/inventario')->with('success', 'Inventario actualizado exitosamente');
-})->middleware(['auth', 'verified'])->name('inventario.update');
+    // Eliminar inventario
+    Route::delete('{inventario}', function (Inventario $inventario) {
+        $inventario->delete();
+        return redirect()->route('inventario.index');
+    })->name('destroy');
+});
 
-Route::get('inventario/{inventario}/edit', function (\App\Models\Inventario $inventario) {
-    return view('inventario.edit', ['inventario' => $inventario]);
-})->middleware(['auth', 'verified'])->name('inventario.edit');
+/*
+|--------------------------------------------------------------------------
+| Compras
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::view('compras', 'compras')->name('compras.index');
 
-Route::view('compras', 'compras')
-    ->middleware(['auth', 'verified'])
-    ->name('compras.index');
+    Route::post('compras', function () {
+        $validated = request()->validate([
+            'cantidad' => 'required|integer|min:1',
+            'costo' => 'required|numeric|min:0.01',
+            'producto' => 'required|string',
+            'fecha' => 'nullable|date',
+        ], [
+            'producto.required' => 'El nombre del producto es obligatorio.',
+            'cantidad.required' => 'La cantidad es obligatoria.',
+            'cantidad.integer' => 'La cantidad debe ser un número entero.',
+            'cantidad.min' => 'La cantidad debe ser al menos 1.',
+            'costo.required' => 'El precio es obligatorio.',
+            'costo.numeric' => 'El precio debe ser un número.',
+            'costo.min' => 'El precio debe ser al menos 0.01.',
+        ]);
 
-Route::post('compras', function () {
-    $validated = request()->validate([
-        'nombre' => 'required|string|max:255',
-        'cantidad' => 'required|integer|min:1',
-        'costo' => 'required|numeric|min:0.01',
-    ], [
-        'nombre.required' => 'El nombre del producto es obligatorio.',
-        'cantidad.required' => 'La cantidad es obligatoria.',
-        'cantidad.integer' => 'La cantidad debe ser un número entero.',
-        'cantidad.min' => 'La cantidad debe ser al menos 1.',
-        'costo.required' => 'El precio es obligatorio.',
-        'costo.numeric' => 'El precio debe ser un número.',
-        'costo.min' => 'El precio debe ser al menos 0.01.',
-    ]);
+        Inventario::create([
+            'producto' => $validated['producto'],
+            'cantidad' => $validated['cantidad'],
+            'costo' => $validated['costo'],
+            'fecha' => $validated['fecha'] ? date('Y-m-d', strtotime($validated['fecha'])) : date('Y-m-d'),
+        ]);
 
-    $validated['producto'] = $validated['nombre'];
+        return redirect()->route('compras.index')->with('success', 'Agregado exitosamente al inventario');
+    })->name('compras.store');
+});
 
-    \App\Models\Inventario::create($validated);
+/*
+|--------------------------------------------------------------------------
+| Ventas
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'verified'])->prefix('ventas')->name('ventas.')->group(function () {
 
-    return redirect('/compras')->with('success', 'Agregado exitosamente al inventario');
-})->middleware(['auth', 'verified'])->name('compras.store');
+    // Lista de ventas
+    Route::get('/', function () {
+        $ventas = Venta::all();
+        return view('ventas', ['ventas' => $ventas]);
+    })->name('index');
 
-Route::get('ventas', function () {
-    $ventas = \App\Models\Venta::all();
-    return view('ventas', ['ventas' => $ventas]);
-})->middleware(['auth', 'verified'])->name('ventas.index');
+    // Crear venta
+    Route::post('/', function () {
+        $validated = request()->validate([
+            'cantidad' => 'required|numeric',
+            'direccion' => 'required|string',
+            'telefono' => 'required|string',
+            'toppings' => 'required|array',
+            'toppings.*' => 'string',
+            'untable' => 'required|string',
+            'medida' => 'required|string',
+            'precio' => 'required|numeric',
+            'horario' => 'nullable|string',
+            'fecha' => 'nullable|date',
+            'nombre' => 'required|string',
+        ]);
 
-Route::post('ventas', function () {
-    $request = request()->validate([
-        'cantidad' => 'required|numeric',
-        'nombre' => 'required|string',
-        'direccion' => 'required|string',
-        'telefono' => 'required|string',
-        'toppings' => 'required|string',
-        'untable' => 'required|string',
-        'medida' => 'required|string',
-        'precio' => 'required|numeric',
-        'horario' => 'nullable|string',
-    ]);
+        $venta = new Venta();
+        $venta->cantidad = $validated['cantidad'];
+        $venta->direccion = $validated['direccion'];
+        $venta->telefono = $validated['telefono'];
+        $venta->toppings = json_encode($validated['toppings']);
+        $venta->untable = $validated['untable'];
+        $venta->medida = $validated['medida'];
+        $venta->precio = $validated['precio'];
+        $venta->horario = $validated['horario'] ?? null;
+        $venta->fecha = $validated['fecha'] ?? null;
+        $venta->nombre = $validated['nombre'];
+        $venta->save();
 
-    $venta = new \App\Models\Venta();
-    $venta->cantidad = $request['cantidad'];
-    $venta->nombre = $request['nombre'];
-    $venta->direccion = $request['direccion'];
-    $venta->telefono = $request['telefono'];
-    $venta->toppings = $request['toppings'];
-    $venta->untable = $request['untable'];
-    $venta->medida = $request['medida'];
-    $venta->precio = $request['precio'];
-    $venta->horario = $request['horario'];
-    $venta->save();
+        return redirect()->route('ventas.index')->with('success', 'Venta creada exitosamente');
+    })->name('store');
 
-    return redirect('/ventas');
-})->middleware(['auth', 'verified'])->name('ventas.store');
+    // Editar venta
+    Route::get('{venta}/edit', function (Venta $venta) {
+        return view('ventas.edit', ['venta' => $venta]);
+    })->name('edit');
 
-Route::delete('ventas/{venta}', function (\App\Models\Venta $venta) {
-    $venta->delete();
+    // Actualización parcial (vendido)
+    Route::put('{venta}', function (Venta $venta) {
+        request()->validate([
+            'fecha' => 'nullable|date',
+        ]);
 
-    return redirect('/ventas');
-})->middleware(['auth', 'verified'])->name('ventas.destroy');
+        $venta->vendido = request('vendido', 0);
+        $venta->save();
 
-Route::put('ventas/{venta}', function (\App\Models\Venta $venta) {
-    $venta->vendido = request('vendido', 0);
-    $venta->save();
+        return response()->json(['success' => true]);
+    })->name('update');
 
-    return response()->json(['success' => true]);
-})->middleware(['auth', 'verified'])->name('ventas.update');
+    // Actualización completa
+    Route::put('{venta}/full', function (Venta $venta) {
+        $validated = request()->validate([
+            'cantidad' => 'required|numeric',
+            'direccion' => 'required|string',
+            'telefono' => 'required|string',
+            'toppings' => 'required|array',
+            'toppings.*' => 'string',
+            'untable' => 'required|string',
+            'medida' => 'required|string',
+            'precio' => 'required|numeric',
+            'horario' => 'nullable|string',
+            'fecha' => 'nullable|date',
+            'nombre' => 'required|string',
+        ]);
 
-Route::put('ventas/{venta}/full', function (\App\Models\Venta $venta) {
-    $request = request()->validate([
-        'cantidad' => 'required|numeric',
-        'nombre' => 'required|string',
-        'direccion' => 'required|string',
-        'telefono' => 'required|string',
-        'toppings' => 'required|string',
-        'untable' => 'required|string',
-        'medida' => 'required|string',
-        'precio' => 'required|numeric',
-        'horario' => 'nullable|string',
-    ]);
+        $venta->cantidad = $validated['cantidad'];
+        $venta->direccion = $validated['direccion'];
+        $venta->telefono = $validated['telefono'];
+        $venta->toppings = json_encode($validated['toppings']);
+        $venta->untable = $validated['untable'];
+        $venta->medida = $validated['medida'];
+        $venta->precio = $validated['precio'];
+        $venta->horario = $validated['horario'] ?? null;
+        $venta->fecha = $validated['fecha'] ?? null;
+        $venta->nombre = $validated['nombre'];
+        $venta->save();
 
-    $venta->cantidad = $request['cantidad'];
-    $venta->nombre = $request['nombre'];
-    $venta->direccion = $request['direccion'];
-    $venta->telefono = $request['telefono'];
-    $venta->toppings = $request['toppings'];
-    $venta->untable = $request['untable'];
-    $venta->medida = $request['medida'];
-    $venta->precio = $request['precio'];
-    $venta->horario = $request['horario'];
-    $venta->save();
+        return redirect()->route('ventas.index')->with('success', 'Venta actualizada exitosamente');
+    })->name('updateFull');
 
-    return redirect('/ventas')->with('success', 'Venta actualizada');
-})->middleware(['auth', 'verified'])->name('ventas.updateFull');
-
-Route::get('ventas/{venta}/edit', function (\App\Models\Venta $venta) {
-    return view('ventas.edit', ['venta' => $venta]);
-})->middleware(['auth', 'verified'])->name('ventas.edit');
+    // Eliminar venta
+    Route::delete('{venta}', function (Venta $venta) {
+        $venta->delete();
+        return redirect()->route('ventas.index')->with('success', 'Venta eliminada exitosamente');
+    })->name('destroy');
+});

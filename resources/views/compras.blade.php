@@ -17,9 +17,9 @@
                     <form method="POST" action="{{ route('compras.store') }}" class="grid grid-cols-2 gap-4">
                         @csrf
                         <div class="col-span-1 mb-4">
-                            <label for="compra_nombre" class="block text-lg font-medium text-pink-700 dark:text-pink-300">Nombre del producto:</label>
-                            <input type="text" id="compra_nombre" name="nombre" class="mt-1 block w-full rounded-md border-pink-300 dark:border-gray-700 shadow-sm focus:border-pink-500 focus:ring-pink-500 text-lg dark:bg-gray-800 dark:text-gray-200 border border-black thick-border p-2" value="{{ old('nombre') }}">
-                            @error('nombre')
+                            <label for="compra_producto" class="block text-lg font-medium text-pink-700 dark:text-pink-300">Nombre del producto:</label>
+                            <input type="text" id="compra_producto" name="producto" class="mt-1 block w-full rounded-md border-pink-300 dark:border-gray-700 shadow-sm focus:border-pink-500 focus:ring-pink-500 text-lg dark:bg-gray-800 dark:text-gray-200 border border-black thick-border p-2" value="{{ old('producto') }}">
+                            @error('producto')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
@@ -36,6 +36,11 @@
                             @error('cantidad')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
+                        </div>
+                        <div class="col-span-1 mb-4">
+                            <label for="inventario_fecha" class="block text-lg font-medium text-pink-700 dark:text-pink-300">Fecha:</label>
+                            <input type="date" id="inventario_fecha" name="fecha" class="mt-1 block w-full rounded-md border-pink-300 dark:border-gray-700 shadow-sm focus:border-pink-500 focus:ring-pink-500 text-lg dark:bg-gray-800 dark:text-gray-200 p-2" value="{{ old('fecha') }}">
+                         
                         </div>
                         <div class="col-span-1"></div>
                         <div class="col-span-2">
