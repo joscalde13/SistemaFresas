@@ -14,9 +14,9 @@
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('Platform')" class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
-                    <flux:navlist.item icon="folder-git-2" :href="route('inventario.index')" :current="request()->routeIs('inventario')" wire:navigate>{{ __('Inventario') }}</flux:navlist.item>
-                    <flux:navlist.item icon="layout-grid" :href="route('compras.index')" :current="request()->routeIs('compras.index')" wire:navigate>{{ __('Compras') }}</flux:navlist.item>
-                    <flux:navlist.item icon="layout-grid" :href="route('ventas.index')" :current="request()->routeIs('ventas.index')" wire:navigate>{{ __('Ventas') }}</flux:navlist.item>
+                    <flux:navlist.item icon="archive-box" :href="route('inventario.index')" :current="request()->routeIs('inventario.index')" wire:navigate>{{ __('Inventario') }}</flux:navlist.item>
+                    <flux:navlist.item icon="shopping-cart" :href="route('compras.index')" :current="request()->routeIs('compras.index')" wire:navigate>{{ __('Compras') }}</flux:navlist.item>
+                    <flux:navlist.item icon="shopping-bag" :href="route('ventas.index')" :current="request()->routeIs('ventas.index')" wire:navigate>{{ __('Ventas') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 
