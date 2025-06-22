@@ -7,6 +7,14 @@
 
     <div class="ventas py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            {{-- Mensaje de éxito --}}
+            @if (session('success'))
+                <div class="mb-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                    <span class="block sm:inline">{{ session('success') }}</span>
+                </div>
+            @endif
+            
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h3 class="text-2xl font-semibold text-pink-700 dark:text-pink-300 mb-6">Venta</h3>
@@ -97,8 +105,12 @@
                         <!-- Precio -->
                         <div>
                             <label for="precio" class="block text-lg font-medium text-pink-700 dark:text-pink-300">Precio:</label>
-                            <input type="number" id="precio" name="precio"
-                                   class="w-full mt-2 rounded-md border-pink-300 dark:border-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-lg dark:bg-gray-800 dark:text-gray-200 border p-3">
+                            <select id="precio" name="precio"
+                                   class="w-full mt-2 rounded-md border-pink-300 dark:border-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-xl dark:bg-gray-800 dark:text-gray-200 border p-4 h-14">
+                                <option value="">Seleccione un precio</option>
+                                <option value="25">Q25</option>
+                                <option value="35">Q35</option>
+                            </select>
                             <div id="precio-error" class="error-message hidden mt-1 text-red-600 text-sm font-medium"></div>
                         </div>
 
