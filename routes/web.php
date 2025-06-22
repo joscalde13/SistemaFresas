@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use App\Models\Inventario;
 use App\Models\Venta;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,10 @@ Route::get('/', fn() => redirect('/login'))->name('home');
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+Route::post('dashboard/clear-records', [DashboardController::class, 'clearAllRecords'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.clear-records');
 
 /*
 |--------------------------------------------------------------------------
