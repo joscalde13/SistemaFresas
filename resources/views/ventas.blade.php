@@ -80,7 +80,7 @@
                         <div>
                             <label class="block text-lg font-medium text-pink-700 dark:text-pink-300">Toppings:</label>
                             <div class="flex flex-col space-y-2 mt-2">
-                                @foreach (['Granola', 'Oreo', 'Chispas', 'Hersheys'] as $topping)
+                                @foreach (['Granola', 'Oreo', 'Chispas', 'Hersheys', 'Coco Rallado', 'Botoneta'] as $topping)
                                     <label class="flex items-center space-x-3">
                                         <input type="checkbox" class="topping w-6 h-6 text-pink-600 focus:ring-pink-500 border-gray-300 rounded"
                                                name="toppings[]" value="{{ $topping }}">
