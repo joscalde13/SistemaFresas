@@ -55,6 +55,19 @@
                             <div id="direccion-error" class="error-message hidden mt-1 text-red-600 text-sm font-medium"></div>
                         </div>
 
+                        <!-- Tipo de Fruta -->
+                        <div>
+                            <label for="tipo_fruta" class="block text-lg font-medium text-pink-700 dark:text-pink-300">Tipo de Fruta:</label>
+                            <select id="tipo_fruta" name="tipo_fruta"
+                                    class="w-full mt-2 rounded-md border-pink-300 dark:border-gray-700 shadow-sm focus:border-pink-500 focus:ring-pink-500 text-xl dark:bg-gray-800 dark:text-gray-200 border p-4 h-14">
+                                <option value="">Seleccione un tipo de fruta</option>
+                                <option value="Fresa">Fresa</option>
+                                <option value="Melocotón">Melocotón</option>
+                                <option value="Banano">Banano</option>
+                            </select>
+                            <div id="tipo_fruta-error" class="error-message hidden mt-1 text-red-600 text-sm font-medium"></div>
+                        </div>
+
                         <!-- Teléfono -->
                         <div>
                             <label for="telefono"
@@ -63,6 +76,8 @@
                                    class="w-full mt-2 rounded-md border-pink-300 dark:border-gray-700 shadow-sm focus:border-pink-500 focus:ring-pink-500 text-lg dark:bg-gray-800 dark:text-gray-200 border p-3">
                             <div id="telefono-error" class="error-message hidden mt-1 text-red-600 text-sm font-medium"></div>
                         </div>
+
+                        
 
                         <!-- Medida -->
                         <div>
@@ -147,7 +162,7 @@
                             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                 <thead class="bg-gray-50 dark:bg-gray-800">
                                     <tr>
-                                        @foreach (['Cantidad', 'Nombre', 'Dirección', 'Teléfono', 'Toppings', 'Untable', 'Medida', 'Precio', 'Horario', 'Fecha', 'Vendido', 'Editar', 'Eliminar'] as $col)
+                                        @foreach (['Cantidad', 'Nombre', 'Dirección', 'Teléfono', 'Tipo de Fruta', 'Toppings', 'Untable', 'Medida', 'Precio', 'Horario', 'Fecha', 'Vendido', 'Editar', 'Eliminar'] as $col)
                                             <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">{{ $col }}</th>
                                         @endforeach
                                     </tr>
@@ -159,6 +174,7 @@
                                             <td class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">{{ $venta->nombre }}</td>
                                             <td class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">{{ $venta->direccion }}</td>
                                             <td class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">{{ $venta->telefono }}</td>
+                                            <td class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">{{ $venta->tipo_fruta ?? '' }}</td>
                                             <td class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">
                                                 @if($venta->toppings)
                                                     {{ implode(', ', json_decode($venta->toppings) ?? []) }}
@@ -280,7 +296,7 @@
                     { id: 'cantidad', message: 'La cantidad es requerida' },
                     { id: 'nombre', message: 'El nombre es requerido' },
                     { id: 'direccion', message: 'La dirección es requerida' },
-              
+                    { id: 'tipo_fruta', message: 'Debe seleccionar un tipo de fruta' },
                     { id: 'medida', message: 'Debe seleccionar una medida' },
                     { id: 'precio', message: 'El precio es requerido' },
                     { id: 'horario', message: 'El horario es requerido' },

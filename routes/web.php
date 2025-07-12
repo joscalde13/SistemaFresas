@@ -145,6 +145,7 @@ Route::middleware(['auth', 'verified'])->prefix('ventas')->name('ventas.')->grou
             'cantidad' => 'required|numeric',
             'direccion' => 'required|string',
             'telefono' => 'required|string',
+            'tipo_fruta' => 'required|string',
             'toppings' => 'required|array',
             'toppings.*' => 'string',
             'untable' => 'required|string',
@@ -159,6 +160,7 @@ Route::middleware(['auth', 'verified'])->prefix('ventas')->name('ventas.')->grou
         $venta->cantidad = $validated['cantidad'];
         $venta->direccion = $validated['direccion'];
         $venta->telefono = $validated['telefono'];
+        $venta->tipo_fruta = $validated['tipo_fruta'];
         $venta->toppings = json_encode($validated['toppings']);
         $venta->untable = $validated['untable'];
         $venta->medida = $validated['medida'];
@@ -194,6 +196,7 @@ Route::middleware(['auth', 'verified'])->prefix('ventas')->name('ventas.')->grou
             'cantidad' => 'required|numeric',
             'direccion' => 'required|string',
             'telefono' => 'required|string',
+            'tipo_fruta' => 'required|string',
             'toppings' => 'required|array',
             'toppings.*' => 'string',
             'untable' => 'required|string',
@@ -207,6 +210,7 @@ Route::middleware(['auth', 'verified'])->prefix('ventas')->name('ventas.')->grou
         $venta->cantidad = $validated['cantidad'];
         $venta->direccion = $validated['direccion'];
         $venta->telefono = $validated['telefono'];
+        $venta->tipo_fruta = $validated['tipo_fruta'];
         $venta->toppings = json_encode($validated['toppings']);
         $venta->untable = $validated['untable'];
         $venta->medida = $validated['medida'];

@@ -11,6 +11,7 @@ class Venta extends Model
         'nombre',
         'direccion',
         'telefono',
+        'tipo_fruta',
         'toppings',
         'untable',
         'medida',
