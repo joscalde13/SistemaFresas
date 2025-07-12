@@ -53,14 +53,20 @@
                         </div>
 
                         <div>
-                            <label for="tipo_fruta" class="block text-lg font-medium text-pink-700 dark:text-pink-300">Tipo de Fruta:</label>
-                            <select id="tipo_fruta" name="tipo_fruta"
-                                    class="w-full mt-2 rounded-md border-pink-300 dark:border-gray-700 shadow-sm focus:border-pink-500 focus:ring-pink-500 text-xl dark:bg-gray-800 dark:text-gray-200 border p-4 h-14">
-                                <option value="">Seleccione un tipo de fruta</option>
-                                <option value="Fresa" {{ old('tipo_fruta', $venta->tipo_fruta) === 'Fresa' ? 'selected' : '' }}>Fresa</option>
-                                <option value="Melocotón" {{ old('tipo_fruta', $venta->tipo_fruta) === 'Melocotón' ? 'selected' : '' }}>Melocotón</option>
-                                <option value="Banano" {{ old('tipo_fruta', $venta->tipo_fruta) === 'Banano' ? 'selected' : '' }}>Banano</option>
-                            </select>
+                            <label class="block text-lg font-medium text-pink-700 dark:text-pink-300">Tipo de Fruta:</label>
+                            <div class="flex flex-col space-y-2 mt-2">
+                                @php
+                                    $selectedFrutas = old('tipo_fruta', $venta->tipo_fruta ?? []);
+                                @endphp
+                                @foreach (['Fresa', 'Melocotón', 'Banano'] as $fruta)
+                                    <label class="flex items-center space-x-3">
+                                        <input type="checkbox" class="fruta w-6 h-6 text-pink-600 focus:ring-pink-500 border-gray-300 rounded"
+                                               name="tipo_fruta[]" value="{{ $fruta }}"
+                                               {{ in_array($fruta, $selectedFrutas) ? 'checked' : '' }}>
+                                        <span class="text-lg">{{ $fruta }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
                             @error('tipo_fruta')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -219,7 +225,7 @@
                 const nombre = document.getElementById('nombre').value;
                 const direccion = document.getElementById('direccion').value;
                 const telefono = document.getElementById('telefono').value;
-                const tipo_fruta = document.getElementById('tipo_fruta').value;
+                const frutas = document.querySelectorAll('input[name="tipo_fruta[]"]:checked');
                 const medida = document.getElementById('medida').value;
                 const toppings = document.querySelectorAll('input[name="toppings[]"]:checked');
                 const untable = document.getElementById('untable').value;
@@ -241,8 +247,8 @@
                 if (!telefono) {
                     errorMessage += 'Por favor, ingrese el teléfono.\n';
                 }
-                if (!tipo_fruta) {
-                    errorMessage += 'Por favor, seleccione un tipo de fruta.\n';
+                if (frutas.length === 0) {
+                    errorMessage += 'Por favor, seleccione al menos un tipo de fruta.\n';
                 }
                 if (!medida) {
                     errorMessage += 'Por favor, seleccione una medida.\n';

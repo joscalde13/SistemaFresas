@@ -22,5 +22,6 @@ class Venta extends Model
 
     protected $casts = [
         'fecha' => 'date:Y-m-d',
+        'tipo_fruta' => 'array',
     ];
 }

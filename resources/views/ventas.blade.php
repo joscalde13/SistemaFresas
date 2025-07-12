@@ -57,14 +57,16 @@
 
                         <!-- Tipo de Fruta -->
                         <div>
-                            <label for="tipo_fruta" class="block text-lg font-medium text-pink-700 dark:text-pink-300">Tipo de Fruta:</label>
-                            <select id="tipo_fruta" name="tipo_fruta"
-                                    class="w-full mt-2 rounded-md border-pink-300 dark:border-gray-700 shadow-sm focus:border-pink-500 focus:ring-pink-500 text-xl dark:bg-gray-800 dark:text-gray-200 border p-4 h-14">
-                                <option value="">Seleccione un tipo de fruta</option>
-                                <option value="Fresa">Fresa</option>
-                                <option value="Melocotón">Melocotón</option>
-                                <option value="Banano">Banano</option>
-                            </select>
+                            <label class="block text-lg font-medium text-pink-700 dark:text-pink-300">Tipo de Fruta:</label>
+                            <div class="flex flex-col space-y-2 mt-2">
+                                @foreach (['Fresa', 'Melocotón', 'Banano'] as $fruta)
+                                    <label class="flex items-center space-x-3">
+                                        <input type="checkbox" class="fruta w-6 h-6 text-pink-600 focus:ring-pink-500 border-gray-300 rounded"
+                                               name="tipo_fruta[]" value="{{ $fruta }}">
+                                        <span class="text-lg">{{ $fruta }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
                             <div id="tipo_fruta-error" class="error-message hidden mt-1 text-red-600 text-sm font-medium"></div>
                         </div>
 
@@ -174,7 +176,11 @@
                                             <td class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">{{ $venta->nombre }}</td>
                                             <td class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">{{ $venta->direccion }}</td>
                                             <td class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">{{ $venta->telefono }}</td>
-                                            <td class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">{{ $venta->tipo_fruta ?? '' }}</td>
+                                            <td class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">
+                                                @if($venta->tipo_fruta)
+                                                    {{ implode(', ', $venta->tipo_fruta) }}
+                                                @endif
+                                            </td>
                                             <td class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">
                                                 @if($venta->toppings)
                                                     {{ implode(', ', json_decode($venta->toppings) ?? []) }}
@@ -296,7 +302,6 @@
                     { id: 'cantidad', message: 'La cantidad es requerida' },
                     { id: 'nombre', message: 'El nombre es requerido' },
                     { id: 'direccion', message: 'La dirección es requerida' },
-                    { id: 'tipo_fruta', message: 'Debe seleccionar un tipo de fruta' },
                     { id: 'medida', message: 'Debe seleccionar una medida' },
                     { id: 'precio', message: 'El precio es requerido' },
                     { id: 'horario', message: 'El horario es requerido' },
@@ -325,6 +330,13 @@
                         }
                     }
                 });
+                
+                // Validar que al menos un tipo de fruta esté seleccionado
+                const frutas = document.querySelectorAll('input[name="tipo_fruta[]"]:checked');
+                if (frutas.length === 0) {
+                    showError('tipo_fruta', 'Debe seleccionar al menos un tipo de fruta');
+                    hasErrors = true;
+                }
                 
                 // Validar que al menos un topping esté seleccionado
                 const toppings = document.querySelectorAll('input[name="toppings[]"]:checked');
