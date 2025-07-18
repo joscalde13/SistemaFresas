@@ -5,6 +5,7 @@ use Livewire\Volt\Volt;
 use App\Models\Inventario;
 use App\Models\Venta;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\VentaDiariaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,7 @@ Route::get('/', fn() => redirect('/login'))->name('home');
 | Dashboard
 |--------------------------------------------------------------------------
 */
-Route::view('dashboard', 'dashboard')
+Route::get('dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
@@ -231,3 +232,8 @@ Route::middleware(['auth', 'verified'])->prefix('ventas')->name('ventas.')->grou
         return redirect()->route('ventas.index')->with('success', 'Venta eliminada exitosamente');
     })->name('destroy');
 });
+
+Route::post('/ventas-diarias/guardar', [VentaDiariaController::class, 'guardarVentaDiaria'])->name('ventas_diarias.guardar');
+Route::get('/ventas-diarias', [VentaDiariaController::class, 'index'])->name('ventas_diarias.index');
+Route::get('/ventas-diarias/grafica', [VentaDiariaController::class, 'grafica'])->name('ventas_diarias.grafica');
+Route::delete('/ventas-diarias/eliminar-todas', [VentaDiariaController::class, 'eliminarTodas'])->name('ventas_diarias.eliminar_todas');

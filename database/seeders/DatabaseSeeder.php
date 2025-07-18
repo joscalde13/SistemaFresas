@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             InventarioSeeder::class,
+            VentasSeeder::class,
+            VentasDiariasSeeder::class,
         ]);
     }
 }

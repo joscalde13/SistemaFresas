@@ -32,7 +32,7 @@
                                         <form method="POST" action="{{ route('inventario.destroy', $item->id) }}" class="inline">
     @csrf
     @method('DELETE')
-    <button type="submit" class="bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-4 rounded mr-2">
+    <button type="submit" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded shadow">
         Eliminar
     </button>
 </form>

@@ -19,6 +19,11 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h3 class="text-2xl font-semibold text-pink-700 dark:text-pink-300 mb-6">Venta</h3>
 
+                    <form action="{{ route('ventas_diarias.guardar') }}" method="POST" style="margin-bottom: 1rem;">
+                        @csrf
+                        <button type="submit" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded shadow">Guardar venta diaria</button>
+                    </form>
+
                     <form id="ventasForm" method="POST" action="{{ route('ventas.store') }}"
                           class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         @csrf
@@ -150,7 +155,7 @@
 
                         <!-- Botón Guardar -->
                         <div class="col-span-1 sm:col-span-2">
-                            <button type="submit"
+                            <button type="submit" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded shadow"
                                     class="w-full sm:w-auto px-6 py-3 bg-pink-600 hover:bg-pink-700 text-white rounded-md shadow focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2">
                                 Guardar Venta
                             </button>

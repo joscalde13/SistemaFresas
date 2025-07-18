@@ -17,6 +17,7 @@
                     <flux:navlist.item icon="archive-box" :href="route('inventario.index')" :current="request()->routeIs('inventario.index')" wire:navigate>{{ __('Inventario') }}</flux:navlist.item>
                     <flux:navlist.item icon="shopping-cart" :href="route('compras.index')" :current="request()->routeIs('compras.index')" wire:navigate>{{ __('Compras') }}</flux:navlist.item>
                     <flux:navlist.item icon="shopping-bag" :href="route('ventas.index')" :current="request()->routeIs('ventas.index')" wire:navigate>{{ __('Ventas') }}</flux:navlist.item>
+                    <flux:navlist.item icon="calendar-days" :href="route('ventas_diarias.index')" :current="request()->routeIs('ventas_diarias.index')" wire:navigate>{{ __('Ventas diarias') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 

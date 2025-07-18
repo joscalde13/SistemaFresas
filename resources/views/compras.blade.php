@@ -44,7 +44,7 @@
                         </div>
                         <div class="col-span-1"></div>
                         <div class="col-span-2">
-                            <button type="submit" class="inline-flex items-center rounded-md border border-transparent bg-pink-600 dark:bg-pink-500 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-pink-700 dark:hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2">Guardar Compra</button>
+                            <button type="submit" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded shadow">Guardar Compra</button>
                         </div>
                     </form>
                     
