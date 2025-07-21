@@ -30,11 +30,34 @@
                         <!-- Precio -->
                         <div>
                             <label for="precio" class="block text-lg font-medium text-pink-700 dark:text-pink-300">Precio:</label>
-                            <select id="precio" name="precio" required class="w-full mt-2 rounded-md border-pink-300 dark:border-gray-700 shadow-sm focus:border-pink-500 focus:ring-pink-500 text-lg dark:bg-gray-800 dark:text-gray-200 border p-3">
-                                <option value="25">Q25</option>
-                                <option value="35">Q35</option>
-                            </select>
+                            <div class="relative">
+                                <select id="precio_select" class="w-full mt-2 rounded-md border-pink-300 dark:border-gray-700 shadow-sm focus:border-pink-500 focus:ring-pink-500 text-xl dark:bg-gray-800 dark:text-gray-200 border p-3" onchange="toggleCustomInput()">
+                                    <option value="25">Q25</option>
+                                    <option value="35">Q35</option>
+                                    <option value="custom">Otro precio...</option>
+                                </select>
+                                <input type="number" id="precio" name="precio" required class="w-full mt-2 rounded-md border-pink-300 dark:border-gray-700 shadow-sm focus:border-pink-500 focus:ring-pink-500 text-lg dark:bg-gray-800 dark:text-gray-200 border p-3 hidden">
+                            </div>
                         </div>
+
+                        <script>
+                        function toggleCustomInput() {
+                            const select = document.getElementById('precio_select');
+                            const input = document.getElementById('precio');
+                            
+                            if (select.value === 'custom') {
+                                select.classList.add('hidden');
+                                input.classList.remove('hidden');
+                                input.focus();
+                                input.value = '';
+                            } else {
+                                input.value = select.value;
+                            }
+                        }
+                        
+                        // Initialize with first option selected
+                        document.getElementById('precio').value = '25';
+                        </script>
 
                         <!-- Botón Guardar -->
                         <div class="col-span-1 sm:col-span-2">
