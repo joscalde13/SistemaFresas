@@ -5,6 +5,7 @@ use Livewire\Volt\Volt;
 use App\Models\Inventario;
 use App\Models\Venta;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\VentasSencillasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -230,4 +231,14 @@ Route::middleware(['auth', 'verified'])->prefix('ventas')->name('ventas.')->grou
         $venta->delete();
         return redirect()->route('ventas.index')->with('success', 'Venta eliminada exitosamente');
     })->name('destroy');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Ventas Sencillas
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'verified'])->prefix('ventas-sencillas')->name('ventas-sencillas.')->group(function () {
+    Route::get('/', [VentasSencillasController::class, 'create'])->name('create');
+    Route::post('/', [VentasSencillasController::class, 'store'])->name('store');
 });
