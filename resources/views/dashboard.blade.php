@@ -64,21 +64,7 @@
             </div>
         </div>
 
-        {{-- Órdenes Recientes --}}
-        <div class="bg-white dark:bg-gray-900 border border-pink-300 dark:border-pink-700 rounded-2xl shadow-md p-6">
-            <h3 class="text-lg font-semibold text-pink-700 dark:text-pink-300 mb-4">Órdenes Recientes</h3>
-            <ul class="divide-y divide-pink-200 dark:divide-pink-800">
-                @forelse ($recentOrders as $order)
-                    <li class="py-3 flex justify-between text-pink-900 dark:text-pink-100">
-                        <span>Cantidad  :  {{ $order->cantidad }}</span>
-                        <span>{{ $order->nombre }}</span>
-                        <span class="font-semibold">Q {{ number_format($order->precio, 2) }}</span>
-                    </li>
-                @empty
-                    <li class="py-3 text-center text-pink-600 dark:text-pink-400">No hay órdenes recientes.</li>
-                @endforelse
-            </ul>
-        </div>
+        
 
         {{-- Ventas por Día --}}
         <div class="bg-white dark:bg-gray-900 border border-green-300 dark:border-green-700 rounded-2xl shadow-md p-6">

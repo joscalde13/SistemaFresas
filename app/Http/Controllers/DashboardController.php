@@ -19,7 +19,7 @@ class DashboardController extends Controller
         $totalVendido = $ventas->sum('precio');
         $cantidadVendida = $ventas->sum('cantidad');
 
-        $ventasPorDia = Venta::selectRaw('DATE(fecha) as fecha, SUM(precio) as total_vendido, SUM(cantidad) as cantidad_vendida')
+        $ventasPorDia = Venta::selectRaw('DATE(fecha) as fecha, SUM(cantidad * precio) as total_vendido, SUM(cantidad) as cantidad_vendida')
             ->groupBy(DB::raw('DATE(fecha)'))
             ->orderBy('fecha', 'desc')
             ->get();
@@ -30,10 +30,10 @@ class DashboardController extends Controller
     public function clearAllRecords()
     {
         try {
-            // Eliminar todos los registros de inventario
+           
             Inventario::truncate();
             
-            // Eliminar todos los registros de ventas
+           
             Venta::truncate();
             
             return redirect()->route('dashboard')->with('success', 'Todos los registros de inventario y ventas han sido eliminados exitosamente.');
