@@ -77,7 +77,9 @@
                         @if(count($datosPorDia))
                             @foreach ($datosPorDia as $dato)
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{{ \Carbon\Carbon::parse($dato->fecha)->format('d/m/Y') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                                        {{ \Carbon\Carbon::parse($dato->fecha)->locale('es')->translatedFormat('l, d/m/Y') }}
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">Q {{ number_format($dato->total_vendido, 2) }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">{{ $dato->cantidad_vendida }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">Q {{ number_format($dato->total_invertido, 2) }}</td>
