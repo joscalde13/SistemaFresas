@@ -13,14 +13,14 @@ class DashboardController extends Controller
     public function index()
     {
         // Obtener ventas agrupadas por día
-        $ventasPorDia = Venta::whereNotNull('fecha')->where('fecha', '!=', '')
+        $ventasPorDia = Venta::whereNotNull('fecha')
             ->selectRaw('DATE(fecha) as fecha, SUM(cantidad * precio) as total_vendido, SUM(cantidad) as cantidad_vendida')
             ->groupBy(DB::raw('DATE(fecha)'))
-            ->orderBy('fecha', 'desc')
+            ->orderBy(DB::raw('DATE(fecha)'), 'desc')
             ->get();
 
         // Obtener inversiones agrupadas por día
-        $inversionesPorDia = Inventario::whereNotNull('fecha')->where('fecha', '!=', '')
+        $inversionesPorDia = Inventario::whereNotNull('fecha')
             ->selectRaw('DATE(fecha) as fecha, SUM(cantidad * costo) as total_invertido')
             ->groupBy(DB::raw('DATE(fecha)'))
             ->get()
