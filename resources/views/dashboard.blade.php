@@ -37,6 +37,8 @@
         </div>
 
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+           
+
             {{-- Tarjeta 1: Total de Ventas --}}
             <div class="bg-pink-100 dark:bg-pink-900 border border-pink-300 dark:border-pink-700 shadow-lg rounded-2xl p-6 text-center">
                 <h3 class="text-base font-semibold text-pink-700 dark:text-pink-200">Total de Ventas</h3>
@@ -76,6 +78,37 @@
                     <li class="py-3 text-center text-pink-600 dark:text-pink-400">No hay órdenes recientes.</li>
                 @endforelse
             </ul>
+        </div>
+
+        {{-- Ventas por Día --}}
+        <div class="bg-white dark:bg-gray-900 border border-green-300 dark:border-green-700 rounded-2xl shadow-md p-6">
+            <h3 class="text-lg font-semibold text-green-700 dark:text-green-300 mb-4">Ventas por Día</h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-green-200 dark:divide-green-800">
+                    <thead class="bg-green-50 dark:bg-green-900">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-green-500 dark:text-green-300 uppercase tracking-wider">Fecha</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-green-500 dark:text-green-300 uppercase tracking-wider">Total Vendido</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-green-500 dark:text-green-300 uppercase tracking-wider">Cantidad Vendida</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-green-200 dark:divide-green-700">
+                        @if($ventasPorDia->count())
+                            @foreach ($ventasPorDia as $venta)
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{{ \Carbon\Carbon::parse($venta->fecha)->format('d/m/Y') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">Q {{ number_format($venta->total_vendido, 2) }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">{{ $venta->cantidad_vendida }}</td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="3" class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500 dark:text-gray-400">No hay ventas registradas.</td>
+                            </tr>
+                        @endif
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </x-layouts.app>

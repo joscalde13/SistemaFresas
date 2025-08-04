@@ -19,7 +19,7 @@ Route::get('/', fn() => redirect('/login'))->name('home');
 | Dashboard
 |--------------------------------------------------------------------------
 */
-Route::view('dashboard', 'dashboard')
+Route::get('dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
