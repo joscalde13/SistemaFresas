@@ -1,15 +1,3 @@
-@php
-    use Illuminate\Support\Facades\DB;
-    use App\Models\Venta;
-    use App\Models\Inventario;
-
-    $totalVentas = Venta::sum('cantidad');
-    $totalVentasPrecio = Venta::sum(DB::raw('cantidad * precio'));
-    $totalInventarioCosto = Inventario::sum(DB::raw('cantidad * costo'));
-    $totalGanancia = $totalVentasPrecio - $totalInventarioCosto;
-    $recentOrders = Venta::orderBy('created_at', 'desc')->take(5)->get();
-@endphp
-
 <x-layouts.app :title="__('Dashboard')">
     <div class="flex flex-col gap-6 p-6 max-w-7xl mx-auto">
 
@@ -37,7 +25,12 @@
         </div>
 
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-           
+            @php
+                $totalVentas = $datosPorDia->sum('cantidad_vendida');
+                $totalVendido = $datosPorDia->sum('total_vendido');
+                $totalInvertido = $datosPorDia->sum('total_invertido');
+                $totalGanancia = $datosPorDia->sum('ganancia');
+            @endphp
 
             {{-- Tarjeta 1: Total de Ventas --}}
             <div class="bg-pink-100 dark:bg-pink-900 border border-pink-300 dark:border-pink-700 shadow-lg rounded-2xl p-6 text-center">
@@ -48,7 +41,7 @@
             {{-- Tarjeta 2: Precio Total de Ventas --}}
             <div class="bg-pink-100 dark:bg-pink-900 border border-pink-300 dark:border-pink-700 shadow-lg rounded-2xl p-6 text-center">
                 <h3 class="text-base font-semibold text-pink-700 dark:text-pink-200">Precio Total de Ventas</h3>
-                <p class="text-3xl font-bold text-pink-900 dark:text-pink-100 mt-2">Q {{ number_format($totalVentasPrecio, 2) }}</p>
+                <p class="text-3xl font-bold text-pink-900 dark:text-pink-100 mt-2">Q {{ number_format($totalVendido, 2) }}</p>
             </div>
 
             {{-- Tarjeta 3: Ganancia Total --}}
@@ -60,7 +53,7 @@
             {{-- Tarjeta 4: Costo Total de Inversión --}}
             <div class="bg-pink-100 dark:bg-pink-900 border border-pink-300 dark:border-pink-700 shadow-lg rounded-2xl p-6 text-center">
                 <h3 class="text-base font-semibold text-pink-700 dark:text-pink-200">Costo de Inversión</h3>
-                <p class="text-3xl font-bold text-pink-900 dark:text-pink-100 mt-2">Q {{ number_format($totalInventarioCosto, 2) }}</p>
+                <p class="text-3xl font-bold text-pink-900 dark:text-pink-100 mt-2">Q {{ number_format($totalInvertido, 2) }}</p>
             </div>
         </div>
 
@@ -76,20 +69,26 @@
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-green-500 dark:text-green-300 uppercase tracking-wider">Fecha</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-green-500 dark:text-green-300 uppercase tracking-wider">Total Vendido</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-green-500 dark:text-green-300 uppercase tracking-wider">Cantidad Vendida</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-green-500 dark:text-green-300 uppercase tracking-wider">Total Invertido</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-green-500 dark:text-green-300 uppercase tracking-wider">Ganancia</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white dark:bg-gray-800 divide-y divide-green-200 dark:divide-green-700">
-                        @if($ventasPorDia->count())
-                            @foreach ($ventasPorDia as $venta)
+                        @if(count($datosPorDia))
+                            @foreach ($datosPorDia as $dato)
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{{ \Carbon\Carbon::parse($venta->fecha)->format('d/m/Y') }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">Q {{ number_format($venta->total_vendido, 2) }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">{{ $venta->cantidad_vendida }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{{ \Carbon\Carbon::parse($dato->fecha)->format('d/m/Y') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">Q {{ number_format($dato->total_vendido, 2) }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">{{ $dato->cantidad_vendida }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">Q {{ number_format($dato->total_invertido, 2) }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold {{ $dato->ganancia >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                                        Q {{ number_format($dato->ganancia, 2) }}
+                                    </td>
                                 </tr>
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="3" class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500 dark:text-gray-400">No hay ventas registradas.</td>
+                                <td colspan="5" class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500 dark:text-gray-400">No hay datos para mostrar.</td>
                             </tr>
                         @endif
                     </tbody>
