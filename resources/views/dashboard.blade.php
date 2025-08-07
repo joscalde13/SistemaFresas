@@ -14,12 +14,13 @@
             </div>
         @endif
 
-        {{-- Botón de eliminación --}}
-        <div class="flex justify-end">
+        {{-- Botones de acción --}}
+        <div class="flex justify-end gap-4">
+            
             <form action="{{ route('dashboard.clear-records') }}" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres eliminar TODOS los registros de inventario y ventas? Esta acción no se puede deshacer.')">
                 @csrf
-                <button type="submit" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200 ease-in-out transform hover:scale-105">
-                    🗑️ Eliminar Todos los Registros
+                <button type="submit" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200 ease-in-out transform hover:scale-105 flex items-center">
+                    <span class="mr-2">🗑️</span> Eliminar Todos los Registros
                 </button>
             </form>
         </div>
@@ -96,6 +97,12 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div class="flex justify-end gap-4">
+            <a href="{{ route('dashboard.pdf') }}" class="bg-pink-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200 ease-in-out transform hover:scale-105 flex items-center">
+                <span class="mr-2">📄</span> Descargar PDF
+            </a>
+          
         </div>
     </div>
 </x-layouts.app>

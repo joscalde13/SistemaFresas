@@ -27,6 +27,10 @@ Route::post('dashboard/clear-records', [DashboardController::class, 'clearAllRec
     ->middleware(['auth', 'verified'])
     ->name('dashboard.clear-records');
 
+Route::get('dashboard/pdf', [DashboardController::class, 'downloadPDF'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.pdf');
+
 /*
 |--------------------------------------------------------------------------
 | Configuración de usuario (Volt)
