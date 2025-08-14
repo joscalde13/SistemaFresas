@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Pedidos PDF</title>
+    <title>TODAS LAS VENTAS </title>
      <style>
         body { font-family: sans-serif; }
         table { width: 100%; border-collapse: collapse; }
