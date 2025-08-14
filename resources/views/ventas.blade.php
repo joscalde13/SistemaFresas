@@ -159,7 +159,13 @@
 
                     <!-- Tabla -->
                     <div class="mt-12">
-                        <h3 class="text-2xl font-semibold text-pink-700 dark:text-pink-300 mb-4">Pedidos</h3>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-2xl font-semibold text-pink-700 dark:text-pink-300">Pedidos</h3>
+                            <a href="{{ route('ventas.pdf') }}"
+                               class="px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-md shadow focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2">
+                                Descargar PDF
+                            </a>
+                        </div>
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                 <thead class="bg-gray-50 dark:bg-gray-800">

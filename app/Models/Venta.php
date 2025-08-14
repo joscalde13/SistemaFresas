@@ -18,10 +18,12 @@ class Venta extends Model
         'precio',
         'vendido',
         'fecha',
+        'horario',
     ];
 
     protected $casts = [
         'fecha' => 'date:Y-m-d',
         'tipo_fruta' => 'array',
+        'toppings' => 'array',
     ];
 }

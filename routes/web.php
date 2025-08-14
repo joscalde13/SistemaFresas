@@ -6,6 +6,7 @@ use App\Models\Inventario;
 use App\Models\Venta;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\VentasSencillasController;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 /*
 |--------------------------------------------------------------------------
@@ -196,6 +197,13 @@ Route::middleware(['auth', 'verified'])->prefix('ventas')->name('ventas.')->grou
         return response()->json(['success' => true]);
     })->name('update');
 
+    // Marcar como realizado
+    Route::put('{venta}/toggle-realizado', function (Venta $venta) {
+        $venta->realizado = !$venta->realizado;
+        $venta->save();
+        return response()->json(['success' => true, 'realizado' => $venta->realizado]);
+    })->name('toggle-realizado');
+
     // Actualización completa
     Route::put('{venta}/full', function (Venta $venta) {
         $validated = request()->validate([
@@ -235,6 +243,13 @@ Route::middleware(['auth', 'verified'])->prefix('ventas')->name('ventas.')->grou
         $venta->delete();
         return redirect()->route('ventas.index')->with('success', 'Venta eliminada exitosamente');
     })->name('destroy');
+
+    // Descargar PDF de ventas
+    Route::get('pdf', function () {
+        $ventas = Venta::all();
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('ventas-pdf', compact('ventas'));
+        return $pdf->download('ventas.pdf');
+    })->name('pdf');
 });
 
 /*
