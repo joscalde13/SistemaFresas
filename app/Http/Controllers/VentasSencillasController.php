@@ -35,6 +35,7 @@ class VentasSencillasController extends Controller
             'untable' => 'N/A',
             'medida' => 'N/A',
             'fecha' => now(),
+            'created_at' => now(),
         ]);
 
         return redirect()->route('ventas-sencillas.create')->with('success', 'Venta registrada exitosamente.');

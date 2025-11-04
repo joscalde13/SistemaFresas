@@ -139,6 +139,7 @@
                             <div id="horario-error" class="error-message hidden mt-1 text-red-600 text-sm font-medium"></div>
                         </div>
 
+                     
                         <!-- Fecha -->
                         <div>
                             <label for="fecha" class="block text-lg font-medium text-pink-700 dark:text-pink-300">Fecha:</label>
@@ -197,6 +198,7 @@
                                             <td class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">Q {{ $venta->precio }}</td>
                                             <td class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">{{ $venta->horario ?? '' }}</td>
                                             <td class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">{{ date('d-m-Y', strtotime($venta->fecha)) }}</td>
+                                            <td class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">{{ $venta->created_at->format('H:i') }}</td>
                                             <td class="px-4 py-2 text-center align-middle">
                                                 <input type="checkbox"
                                                        onchange="toggleVendido({{ $venta->id }}, this, this.closest('tr'))"
