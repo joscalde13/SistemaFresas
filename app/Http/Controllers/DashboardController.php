@@ -46,7 +46,11 @@ class DashboardController extends Controller
             ];
         });
 
-        return view('dashboard', compact('datosPorDia'));
+        // Calcular cantidad de ventas por precio (35 y 25)
+        $cantidadVentas35 = Venta::whereNotNull('fecha')->where('precio', 35)->sum('cantidad');
+        $cantidadVentas25 = Venta::whereNotNull('fecha')->where('precio', 25)->sum('cantidad');
+
+        return view('dashboard', compact('datosPorDia', 'cantidadVentas35', 'cantidadVentas25'));
     }
 
     public function clearAllRecords()

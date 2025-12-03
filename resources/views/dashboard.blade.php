@@ -16,10 +16,12 @@
 
         {{-- Botones de acción --}}
         <div class="flex justify-end gap-4">
-            
-            <form action="{{ route('dashboard.clear-records') }}" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres eliminar TODOS los registros de inventario y ventas? Esta acción no se puede deshacer.')">
+
+            <form action="{{ route('dashboard.clear-records') }}" method="POST"
+                onsubmit="return confirm('¿Estás seguro de que quieres eliminar TODOS los registros de inventario y ventas? Esta acción no se puede deshacer.')">
                 @csrf
-                <button type="submit" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200 ease-in-out transform hover:scale-105 flex items-center">
+                <button type="submit"
+                    class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200 ease-in-out transform hover:scale-105 flex items-center">
                     <span class="mr-2">🗑️</span> Eliminar Todos los Registros
                 </button>
             </form>
@@ -34,31 +36,52 @@
             @endphp
 
             {{-- Tarjeta 1: Total de Ventas --}}
-            <div class="bg-pink-100 dark:bg-pink-900 border border-pink-300 dark:border-pink-700 shadow-lg rounded-2xl p-6 text-center">
+            <div
+                class="bg-pink-100 dark:bg-pink-900 border border-pink-300 dark:border-pink-700 shadow-lg rounded-2xl p-6 text-center">
                 <h3 class="text-base font-semibold text-pink-700 dark:text-pink-200">Total de Ventas</h3>
                 <p class="text-3xl font-bold text-pink-900 dark:text-pink-100 mt-2">{{ $totalVentas }}</p>
             </div>
 
             {{-- Tarjeta 2: Precio Total de Ventas --}}
-            <div class="bg-pink-100 dark:bg-pink-900 border border-pink-300 dark:border-pink-700 shadow-lg rounded-2xl p-6 text-center">
+            <div
+                class="bg-pink-100 dark:bg-pink-900 border border-pink-300 dark:border-pink-700 shadow-lg rounded-2xl p-6 text-center">
                 <h3 class="text-base font-semibold text-pink-700 dark:text-pink-200">Precio Total de Ventas</h3>
-                <p class="text-3xl font-bold text-pink-900 dark:text-pink-100 mt-2">Q {{ number_format($totalVendido, 2) }}</p>
+                <p class="text-3xl font-bold text-pink-900 dark:text-pink-100 mt-2">Q
+                    {{ number_format($totalVendido, 2) }}</p>
             </div>
 
             {{-- Tarjeta 3: Ganancia Total --}}
-            <div class="bg-pink-100 dark:bg-pink-900 border border-pink-300 dark:border-pink-700 shadow-lg rounded-2xl p-6 text-center">
+            <div
+                class="bg-pink-100 dark:bg-pink-900 border border-pink-300 dark:border-pink-700 shadow-lg rounded-2xl p-6 text-center">
                 <h3 class="text-base font-semibold text-pink-700 dark:text-pink-200">Ganancia Total</h3>
-                <p class="text-3xl font-bold text-pink-900 dark:text-pink-100 mt-2">Q {{ number_format($totalGanancia, 2) }}</p>
+                <p class="text-3xl font-bold text-pink-900 dark:text-pink-100 mt-2">Q
+                    {{ number_format($totalGanancia, 2) }}</p>
             </div>
 
             {{-- Tarjeta 4: Costo Total de Inversión --}}
-            <div class="bg-pink-100 dark:bg-pink-900 border border-pink-300 dark:border-pink-700 shadow-lg rounded-2xl p-6 text-center">
+            <div
+                class="bg-pink-100 dark:bg-pink-900 border border-pink-300 dark:border-pink-700 shadow-lg rounded-2xl p-6 text-center">
                 <h3 class="text-base font-semibold text-pink-700 dark:text-pink-200">Costo de Inversión</h3>
-                <p class="text-3xl font-bold text-pink-900 dark:text-pink-100 mt-2">Q {{ number_format($totalInvertido, 2) }}</p>
+                <p class="text-3xl font-bold text-pink-900 dark:text-pink-100 mt-2">Q
+                    {{ number_format($totalInvertido, 2) }}</p>
+            </div>
+
+            {{-- Tarjeta 5: Ventas de 35 --}}
+            <div
+                class="bg-pink-100 dark:bg-pink-900 border border-pink-300 dark:border-pink-700 shadow-lg rounded-2xl p-6 text-center">
+                <h3 class="text-base font-semibold text-pink-700 dark:text-pink-200">Ventas de 35</h3>
+                <p class="text-3xl font-bold text-pink-900 dark:text-pink-100 mt-2">{{ $cantidadVentas35 }}</p>
+            </div>
+
+            {{-- Tarjeta 6: Ventas de 25 --}}
+            <div
+                class="bg-pink-100 dark:bg-pink-900 border border-pink-300 dark:border-pink-700 shadow-lg rounded-2xl p-6 text-center">
+                <h3 class="text-base font-semibold text-pink-700 dark:text-pink-200">Ventas de 25</h3>
+                <p class="text-3xl font-bold text-pink-900 dark:text-pink-100 mt-2">{{ $cantidadVentas25 }}</p>
             </div>
         </div>
 
-        
+
 
         {{-- Ventas por Día --}}
         <div class="bg-white dark:bg-gray-900 border border-green-300 dark:border-green-700 rounded-2xl shadow-md p-6">
@@ -67,11 +90,21 @@
                 <table class="min-w-full divide-y divide-green-200 dark:divide-green-800">
                     <thead class="bg-green-50 dark:bg-green-900">
                         <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-green-500 dark:text-green-300 uppercase tracking-wider">Fecha</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-green-500 dark:text-green-300 uppercase tracking-wider">Total Vendido</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-green-500 dark:text-green-300 uppercase tracking-wider">Cantidad Vendida</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-green-500 dark:text-green-300 uppercase tracking-wider">Total Invertido</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-green-500 dark:text-green-300 uppercase tracking-wider">Ganancia</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-green-500 dark:text-green-300 uppercase tracking-wider">
+                                Fecha</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-green-500 dark:text-green-300 uppercase tracking-wider">
+                                Total Vendido</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-green-500 dark:text-green-300 uppercase tracking-wider">
+                                Cantidad Vendida</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-green-500 dark:text-green-300 uppercase tracking-wider">
+                                Total Invertido</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-green-500 dark:text-green-300 uppercase tracking-wider">
+                                Ganancia</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white dark:bg-gray-800 divide-y divide-green-200 dark:divide-green-700">
@@ -81,17 +114,23 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
                                         {{ \Carbon\Carbon::parse($dato->fecha)->locale('es')->translatedFormat('l, d/m/Y') }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">Q {{ number_format($dato->total_vendido, 2) }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">{{ $dato->cantidad_vendida }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">Q {{ number_format($dato->total_invertido, 2) }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold {{ $dato->ganancia >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">Q
+                                        {{ number_format($dato->total_vendido, 2) }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                                        {{ $dato->cantidad_vendida }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">Q
+                                        {{ number_format($dato->total_invertido, 2) }}</td>
+                                    <td
+                                        class="px-6 py-4 whitespace-nowrap text-sm font-bold {{ $dato->ganancia >= 0 ? 'text-green-600' : 'text-red-600' }}">
                                         Q {{ number_format($dato->ganancia, 2) }}
                                     </td>
                                 </tr>
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="5" class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500 dark:text-gray-400">No hay datos para mostrar.</td>
+                                <td colspan="5"
+                                    class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500 dark:text-gray-400">
+                                    No hay datos para mostrar.</td>
                             </tr>
                         @endif
                     </tbody>
@@ -99,10 +138,11 @@
             </div>
         </div>
         <div class="flex justify-end gap-4">
-            <a href="{{ route('dashboard.pdf') }}" class="bg-pink-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200 ease-in-out transform hover:scale-105 flex items-center">
+            <a href="{{ route('dashboard.pdf') }}"
+                class="bg-pink-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200 ease-in-out transform hover:scale-105 flex items-center">
                 <span class="mr-2">📄</span> Descargar PDF
             </a>
-          
+
         </div>
     </div>
 </x-layouts.app>
